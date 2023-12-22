@@ -11,6 +11,7 @@ pub enum TransMethod {
 pub enum Algorithm {
     PropertyDriven,
     Traditional,
+    Cav00,
 }
 
 impl Into<TransBddMethod> for TransMethod {
