@@ -52,7 +52,10 @@ where
 {
     let (sender, receiver) = sync::mpsc::channel();
     let future = unsafe {
-        let future = Box::new(future).into_raw() as *mut (dyn Future<Output = T> + 'static + Send);
+        let future = std::mem::transmute::<
+            *mut (dyn Future<Output = T> + '_),
+            *mut (dyn Future<Output = T> + Send + 'static),
+        >(Box::new(future).into_raw());
         Pin::new_unchecked(Box::from_raw(future))
     };
     let future = async move {
